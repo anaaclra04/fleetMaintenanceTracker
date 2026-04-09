@@ -42,5 +42,3 @@ SELECT VIN, SUM(Cost) / SUM(GallonsPurchased) AS Average_Price_Per_Gallon
 FROM FuelReceipt
 GROUP BY VIN;
 
-14:49:22	INSERT INTO Trips (Date, Distance_Miles, FromLocation, ToLocation, VIN, LicenseNumber) VALUES ('2026-04-08', 45.5, 'Orlando', 'Tampa', '12345ABCDE67890', 'FL-999999')	Error Code: 1452. Cannot add or update a child row: a foreign key constraint fails (`fleetmaintenance`.`trips`, CONSTRAINT `trips_ibfk_1` FOREIGN KEY (`VIN`) REFERENCES `vehicles` (`VIN`))	0.054 sec
-
