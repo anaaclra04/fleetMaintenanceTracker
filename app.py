@@ -29,7 +29,7 @@ html, body, [class*="css"] {
 
 /* ── Sidebar ── */
 section[data-testid="stSidebar"] {
-    background: #0a0a0f;
+    background: #000D24;
     border-right: 1px solid #1e1e2e;
 }
 section[data-testid="stSidebar"] * {
@@ -42,7 +42,7 @@ section[data-testid="stSidebar"] .stRadio label {
 }
 
 /* ── Main background ── */
-.stApp { background: #0d0d17; }
+.stApp { background: #000919; }
 
 /* ── Headings ── */
 h1, h2, h3 {
@@ -513,7 +513,7 @@ elif page == "🔧  Service Events":
                     st.error(str(e))
 
 
-# ── TRIPS ──────────────────────────────────
+# ── TRIPS ────────────────────────────────── 
 elif page == "🗺️  Trips":
     page_header("Trips", "Journey log across the fleet")
     tab1, tab2 = st.tabs(["  View All  ", "  Log Trip  "])
@@ -525,29 +525,40 @@ elif page == "🗺️  Trips":
                    t.FromLocation, t.ToLocation,
                    t.Distance_Miles AS Miles
             FROM Trips t
-            JOIN Drivers d ON t.LicenseNumber=d.LicenseNumber
-            JOIN Vehicles v ON t.VIN=v.VIN
+            JOIN Drivers d ON t.LicenseNumber = d.LicenseNumber
+            JOIN Vehicles v ON t.VIN = v.VIN
             ORDER BY t.Date DESC
         """)
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        
+        if not df.empty:
+            st.dataframe(df, use_container_width=True, hide_index=True)
+        else:
+            st.warning("The main Trips table is returning empty. Double-check your table names (Trips vs trips).")
 
         pill("MILES PER DRIVER")
         miles = run_query("""
-            SELECT d.Name, ROUND(SUM(t.Distance_Miles),1) AS Total_Miles
-            FROM Trips t JOIN Drivers d ON t.LicenseNumber=d.LicenseNumber
-            GROUP BY d.Name ORDER BY Total_Miles DESC
+            SELECT d.Name, ROUND(SUM(t.Distance_Miles), 1) AS Total_Miles
+            FROM Trips t 
+            JOIN Drivers d ON t.LicenseNumber = d.LicenseNumber
+            GROUP BY d.Name 
+            ORDER BY Total_Miles DESC
         """)
-        fig = px.bar(miles, x="Name", y="Total_Miles",
-                     template="plotly_dark",
-                     color_discrete_sequence=["#1f6feb"],
-                     labels={"Total_Miles":"Miles","Name":"Driver"})
-        fig.update_layout(
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
-            margin=dict(l=0,r=0,t=10,b=0),
-            font_family="DM Mono",
-        )
-        st.plotly_chart(fig, use_container_width=True)
+
+        # Only run Plotly if data exists
+        if not miles.empty:
+            fig = px.bar(miles, x="Name", y="Total_Miles",
+                         template="plotly_dark",
+                         color_discrete_sequence=["#1f6feb"],
+                         labels={"Total_Miles":"Miles","Name":"Driver"})
+            fig.update_layout(
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+                margin=dict(l=0,r=0,t=10,b=0),
+                font_family="DM Mono",
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("No trip data found to chart.")
 
     with tab2:
         pill("LOG TRIP")

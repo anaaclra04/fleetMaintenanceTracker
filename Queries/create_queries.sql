@@ -119,7 +119,7 @@ INSERT INTO ServiceEvents (Date, Type, Cost, VIN) VALUES
 INSERT INTO Trips (Date, Distance_Miles, FromLocation, ToLocation, VIN, LicenseNumber)
 VALUES 
 -- Toyota Camry (Silver) trips
-('2026-04-08', 45.5, 'Orlando', 'Tampa', '12345ABCDE67890', 'FL-999999'),
+('2026-04-08', 45.5, 'Orlando', 'Tampa', '12345ABCDE6789010', 'FL-999999'),
 -- Honda Civic trips
 ('2024-08-01',  45.2, 'Orlando, FL',    'Kissimmee, FL',   '1HGCM82633A123456', 'FL-002345'),
 ('2024-08-15', 120.5, 'Orlando, FL',    'Tampa, FL',       '1HGCM82633A123456', 'FL-002345'),
@@ -163,7 +163,7 @@ VALUES
 
 
 -- Update: Updating a vehicle's mileage after a service.
-UPDATE Vehicles SET Mileage = 55000 WHERE VIN = '12345ABCDE67890';
+UPDATE Vehicles SET Mileage = 55000 WHERE VIN = '12345ABCDE6789010';
 
 -- Delete: Deleting a fuel receipt (or using a "Soft Delete" by setting a status to 'Inactive').
 DELETE FROM FuelReceipt WHERE ReceiptID = 10;
@@ -172,7 +172,7 @@ DELETE FROM FuelReceipt WHERE ReceiptID = 10;
 
 -- Filter by Date: "Show me all service events from last month."
 SELECT * FROM ServiceEvents 
-WHERE Date BETWEEN '2026-03-01' AND '2026-03-31';
+WHERE Date BETWEEN '2024-03-01' AND '2024-03-31';
 
 -- Search by Driver: "Find all trips taken by a specific driver."
 SELECT * FROM Trips 
