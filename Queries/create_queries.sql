@@ -2,7 +2,7 @@
 
 -- 1. Insert the Vehicle (The Parent)
 INSERT INTO Vehicles (VIN, Make, Model, Year, Color, Mileage) 
-VALUES 	('12345ABCDE6789010', 'Toyota',     'Camry',       2024, 'Silver',   500),
+VALUES 		('12345ABCDE6789010', 'Toyota',     'Camry',       2024, 'Silver',   500),
 		    ('1HGCM82633A123456', 'Honda',      'Civic',       2020, 'Blue',   45230),
 		    ('2T1BURHE0JC123457', 'Toyota',     'Corolla',     2019, 'White',  62100),
 		    ('3VWFE21C04M123458', 'Volkswagen', 'Jetta',       2021, 'Black',  31450),
@@ -14,12 +14,106 @@ VALUES 	('12345ABCDE6789010', 'Toyota',     'Camry',       2024, 'Silver',   500
 
 -- 2. Insert the Driver (The other Parent)
 INSERT INTO Drivers (LicenseNumber, Name, PhoneNumber) 
-VALUES 	('FL-999999', 'John Doe',        '407-555-0199'),
+VALUES 		('FL-999999', 'John Doe',        '407-555-0199'),
 		    ('FL-001234', 'James Carter',    '407-555-0101'),
-        ('FL-003456', 'Robert Thompson', '321-555-0303'),
+        	('FL-003456', 'Robert Thompson', '321-555-0303'),
 		    ('FL-004567', 'Angela Davis',    '321-555-0404'),
 		    ('FL-005678', 'Kevin Patel',     '407-555-0505'),
 		    ('FL-006789', 'Sandra Lee',      '813-555-0606');
+
+
+-- Driver Vehicle Assignments
+INSERT INTO DriverVehicleAssignment (StartDate, EndDate, VIN, LicenseNumber) VALUES
+-- Active assignments (no EndDate overlap)
+('2024-01-01', '2024-06-30', '1HGCM82633A123456', 'FL-001234'),
+('2024-07-01', NULL,         '1HGCM82633A123456', 'FL-002345'), -- current
+('2024-01-01', NULL,         '2T1BURHE0JC123457', 'FL-003456'), -- current
+('2024-03-15', '2024-09-30', '3VWFE21C04M123458', 'FL-004567'),
+('2024-10-01', NULL,         '3VWFE21C04M123458', 'FL-001234'), -- current
+('2024-01-01', NULL,         '4T1BF1FK5CU123459', 'FL-005678'), -- current
+('2024-02-01', NULL,         '5YJSA1DN5DFP12345', 'FL-006789'), -- current
+('2023-06-01', '2024-05-31', '1FTFW1ET5DFC12346', 'FL-002345'),
+('2024-06-01', NULL,         '1FTFW1ET5DFC12346', 'FL-004567'), -- current
+('2024-01-01', NULL,         '2GNFLFEK5G612347',  'FL-003456'), -- current
+('2023-01-01', NULL,         '3GCUKREC0EG123480', 'FL-005678'); -- current
+
+--Fuel Receipts
+INSERT INTO FuelReceipt (Date, Cost, GallonsPurchased, VIN) VALUES
+-- Honda Civic
+('2024-08-05',  52.30, 14.2, '1HGCM82633A123456'),
+('2024-09-12',  48.75, 13.5, '1HGCM82633A123456'),
+('2024-10-20',  55.10, 15.1, '1HGCM82633A123456'),
+('2024-11-08',  50.00, 13.8, '1HGCM82633A123456'),
+-- Toyota Corolla
+('2024-07-15',  60.20, 16.4, '2T1BURHE0JC123457'),
+('2024-08-22',  58.40, 15.9, '2T1BURHE0JC123457'),
+('2024-09-30',  62.00, 17.0, '2T1BURHE0JC123457'),
+('2024-11-01',  57.85, 15.6, '2T1BURHE0JC123457'),
+-- VW Jetta
+('2024-08-10',  45.00, 12.1, '3VWFE21C04M123458'),
+('2024-10-05',  47.60, 12.8, '3VWFE21C04M123458'),
+('2024-11-15',  49.20, 13.2, '3VWFE21C04M123458'),
+-- Toyota Camry
+('2024-09-08',  53.50, 14.5, '4T1BF1FK5CU123459'),
+('2024-10-18',  51.80, 14.0, '4T1BF1FK5CU123459'),
+-- Tesla Model S (charging costs logged here, 0 gallons)
+('2024-09-01',  18.00,  0.0, '5YJSA1DN5DFP12345'),
+('2024-11-10',  21.50,  0.0, '5YJSA1DN5DFP12345'),
+-- Ford F-150
+('2024-07-04',  95.00, 25.0, '1FTFW1ET5DFC12346'),
+('2024-08-14',  88.50, 23.2, '1FTFW1ET5DFC12346'),
+('2024-09-25',  92.30, 24.1, '1FTFW1ET5DFC12346'),
+('2024-10-30',  85.00, 22.5, '1FTFW1ET5DFC12346'),
+-- Chevy Equinox
+('2024-08-08',  65.40, 17.5, '2GNFLFEK5G612347'),
+('2024-09-18',  63.10, 16.9, '2GNFLFEK5G612347'),
+('2024-11-05',  67.80, 18.2, '2GNFLFEK5G612347'),
+-- Chevy Silverado
+('2024-07-20', 105.00, 28.0, '3GCUKREC0EG123480'),
+('2024-08-30',  98.75, 26.5, '3GCUKREC0EG123480'),
+('2024-10-10', 110.20, 29.4, '3GCUKREC0EG123480'),
+('2024-11-20', 102.50, 27.1, '3GCUKREC0EG123480');
+
+
+-- Service Events
+INSERT INTO ServiceEvents (Date, Type, Cost, VIN) VALUES
+-- Honda Civic
+('2024-02-15', 'Oil Change',             45.00,  '1HGCM82633A123456'),
+('2024-05-20', 'Tire Rotation',          25.00,  '1HGCM82633A123456'),
+('2024-08-30', 'Brake Inspection',       80.00,  '1HGCM82633A123456'),
+('2024-11-01', 'Oil Change',             45.00,  '1HGCM82633A123456'),
+-- Toyota Corolla
+('2024-01-10', 'Oil Change',             45.00,  '2T1BURHE0JC123457'),
+('2024-04-22', 'Air Filter Replacement', 30.00,  '2T1BURHE0JC123457'),
+('2024-07-15', 'Transmission Service',  220.00,  '2T1BURHE0JC123457'),
+('2024-10-05', 'Oil Change',             45.00,  '2T1BURHE0JC123457'),
+-- VW Jetta
+('2024-03-10', 'Oil Change',             55.00,  '3VWFE21C04M123458'),
+('2024-09-18', 'Brake Pad Replacement', 310.00,  '3VWFE21C04M123458'),
+-- Toyota Camry
+('2024-06-01', 'Oil Change',             50.00,  '4T1BF1FK5CU123459'),
+('2024-10-15', 'Tire Rotation',          25.00,  '4T1BF1FK5CU123459'),
+-- Tesla Model S
+('2024-04-12', 'Annual Inspection',     150.00,  '5YJSA1DN5DFP12345'),
+('2024-10-20', 'Software Update/Check',  75.00,  '5YJSA1DN5DFP12345'),
+-- Ford F-150
+('2024-01-08', 'Oil Change',             75.00,  '1FTFW1ET5DFC12346'),
+('2024-03-25', 'Tire Replacement',      850.00,  '1FTFW1ET5DFC12346'),
+('2024-06-14', 'Oil Change',             75.00,  '1FTFW1ET5DFC12346'),
+('2024-09-02', 'AC Repair',            1200.00,  '1FTFW1ET5DFC12346'),
+('2024-11-12', 'Oil Change',             75.00,  '1FTFW1ET5DFC12346'),
+-- Chevy Equinox
+('2024-02-28', 'Oil Change',             55.00,  '2GNFLFEK5G612347'),
+('2024-07-10', 'Brake Inspection',       80.00,  '2GNFLFEK5G612347'),
+('2024-10-22', 'Oil Change',             55.00,  '2GNFLFEK5G612347'),
+-- Chevy Silverado (high mileage = more service)
+('2024-01-05', 'Oil Change',             80.00,  '3GCUKREC0EG123480'),
+('2024-02-18', 'Wheel Alignment',       120.00,  '3GCUKREC0EG123480'),
+('2024-04-30', 'Oil Change',             80.00,  '3GCUKREC0EG123480'),
+('2024-06-20', 'Engine Tune-Up',        450.00,  '3GCUKREC0EG123480'),
+('2024-08-15', 'Oil Change',             80.00,  '3GCUKREC0EG123480'),
+('2024-10-28', 'Transmission Repair',  1800.00,  '3GCUKREC0EG123480');
+
 
 -- Insert: adding a new trip
 INSERT INTO Trips (Date, Distance_Miles, FromLocation, ToLocation, VIN, LicenseNumber)

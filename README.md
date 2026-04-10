@@ -1,6 +1,13 @@
 # fleetMaintenanceTracker
 SQL project for COP4710
 
+# To run the project:
+python3 -m streamlit run app.py
+
+# To access the database:
+mysql -u root -p FleetMaintenance
+Type password provided on the presentation.
+
 
 ER Diagram for our project
 
