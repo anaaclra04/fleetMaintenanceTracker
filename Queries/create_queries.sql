@@ -37,7 +37,7 @@ INSERT INTO DriverVehicleAssignment (StartDate, EndDate, VIN, LicenseNumber) VAL
 ('2024-01-01', NULL,         '2GNFLFEK5G612347',  'FL-003456'), -- current
 ('2023-01-01', NULL,         '3GCUKREC0EG123480', 'FL-005678'); -- current
 
---Fuel Receipts
+-- Fuel Receipts
 INSERT INTO FuelReceipt (Date, Cost, GallonsPurchased, VIN) VALUES
 -- Honda Civic
 ('2024-08-05',  52.30, 14.2, '1HGCM82633A123456'),
