@@ -167,12 +167,21 @@ def get_connection():
     )
 
 def run_query(sql: str, params=None) -> pd.DataFrame:
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute(sql, params or ())
-    rows = cursor.fetchall()
-    cursor.close()
-    return pd.DataFrame(rows)
+    try:     
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(sql, params or ())
+        rows = cursor.fetchall()
+        cursor.close()
+        return pd.DataFrame(rows)
+    except mysql.connector.errors.OperationalError:
+        st.cache_resource.clear()
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(sql, params or ())
+        rows = cursor.fetchall()
+        cursor.close()
+        return pd.DataFrame(rows)
 
 def run_write(sql: str, params=None):
     conn = get_connection()
